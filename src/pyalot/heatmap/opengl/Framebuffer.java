@@ -1,0 +1,71 @@
+package pyalot.heatmap.opengl;
+
+import org.example.heatmap.MyGLRenderer;
+
+import android.opengl.GLES20;
+
+public class Framebuffer {
+
+	private int[] buffer;
+	
+	public Framebuffer() {
+		this.buffer = new int[Main.NUM_BUFFER];
+		GLES20.glGenFramebuffers(Main.NUM_BUFFER, this.buffer, Main.BUFFER_OFFSET);
+	}
+	
+	Framebuffer bind() {
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.buffer[Main.BUFFER_OFFSET]);
+MyGLRenderer.checkGlError("glBindFramebuffer");
+		return this;
+	}
+
+	Framebuffer unbind() {
+		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, Main.BUFFER_NULL);
+		return this;
+	}	
+	
+	Framebuffer check() throws RuntimeException {
+		final int result = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER);
+		/*
+		 * TODO: Check maybe GLES20.GL_FRAMEBUFFER_COMPLETE
+		 */
+		switch (result) {
+		case GLES20.GL_FRAMEBUFFER_UNSUPPORTED:
+			throw new RuntimeException("Framebuffer is unsupported");
+			// break;
+		case GLES20.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+			throw new RuntimeException("Framebuffer incomplete attachment");
+			// break;
+		case GLES20.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+			throw new RuntimeException("Framebuffer incomplete dimensions");
+			// break;
+		case GLES20.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+			throw new RuntimeException("Framebuffer incomplete missing attachment");
+		}
+		return this;
+	}
+
+	Framebuffer color(Texture texture) {
+		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, texture.target, texture.handle[Main.BUFFER_OFFSET], Main.LEVEL);
+MyGLRenderer.checkGlError("glFramebufferTexture2D");
+	    try {
+			this.check();
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+		}
+	    return this;
+	}
+
+//	void depth(MyBuffer buffer) {
+//		GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT, GLES20.GL_RENDERBUFFER, buffer.id);
+//	    try {
+//			this.check();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+	
+	void destroy() {
+		GLES20.glDeleteFramebuffers(Main.NUM_BUFFER, this.buffer, Main.BUFFER_OFFSET);
+	}
+}
