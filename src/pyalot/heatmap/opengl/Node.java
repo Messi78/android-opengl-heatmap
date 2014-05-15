@@ -16,8 +16,8 @@ public class Node {
 			this.texture = new Texture(null, null);
 			this.texture.bind(Main.BIND_ZERO).setSize(this.width, this.height).nearest().clampToEdge();
 //			String floatExt =  this.gl.getFloatExtension({
-//			      require: ['renderable']
-//		    });
+//				require: ['renderable']
+//			});
 //			this.texture = new Texture(floatExt.type).bind(0).setSize(this.width, this.height).nearest().clampToEdge();
 			this.fbo = new Framebuffer();
 			this.fbo.bind().color(this.texture).unbind();
@@ -42,13 +42,13 @@ public class Node {
 		this.fbo.unbind();
 	}
 
-//	public void resize(final int width, final int height) {
-//		this.width = width;
-//		this.height = height;
-//		try {
-//			this.texture.bind(0).setSize(this.width, this.height);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void resize(final int width, final int height) {
+		this.width = width;
+		this.height = height;
+		try {
+			this.texture.bind(0).setSize(this.width, this.height);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

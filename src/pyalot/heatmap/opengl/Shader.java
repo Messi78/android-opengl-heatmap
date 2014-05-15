@@ -34,7 +34,7 @@ GLES20.glBindAttribLocation(this.program, 1, Main.VARIABLE_ATTRIBUTE_INTENSITY);
 		this.compileShader(this.fs, fragment);
 		this.link();
 		this.value_cache = new HashMap<String, Float>();
-	    this.uniform_cache = new HashMap<String, Integer>();
+		this.uniform_cache = new HashMap<String, Integer>();
 		this.attribCache = new HashMap<String, Integer>();
 	}
 
@@ -76,14 +76,14 @@ if (location <0 ) {
 	
 	int uniformLoc(final String name) {
 		Integer location = this.uniform_cache.get(name);
-	    if (location == null) {
-	    	location = GLES20.glGetUniformLocation(this.program, name);
+		if (location == null) {
+			location = GLES20.glGetUniformLocation(this.program, name);
 if (location < 0) {
 	Log.w("uniformLoc", "location negative:" + location);
 }
-	    	this.uniform_cache.put(name, location);
-	      }
-	      return location;		
+			this.uniform_cache.put(name, location);
+		}
+		return location;
 	}
 	
 	Shader _int(final String name, int value) {
@@ -110,13 +110,13 @@ MyGLRenderer.checkGlError("glUniform2f");
 	
 //	Shader _float(String name, float value) {
 //		float cached = this.value_cache.get(name);
-//	    if (cached != value) {
-//	        this.value_cache.put(name, value);
-//	        Integer loc = this.uniformLoc(name);
-//	        if (loc != null) {
-//	          GLES20.glUniform1f(loc, value);
-//	        }
-//	    }
-//	    return this;
+//		if (cached != value) {
+//			this.value_cache.put(name, value);
+//			Integer loc = this.uniformLoc(name);
+//			if (loc != null) {
+//				GLES20.glUniform1f(loc, value);
+//			}
+//		}
+//		return this;
 //	}
 }

@@ -16,37 +16,37 @@ import android.util.Log;
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
-    private static final String LOG = "MyGLRenderer";
-    private GLHeatmap mHeatmap;
+	private static final String LOG = "MyGLRenderer";
+	private GLHeatmap mHeatmap;
 
-    // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
-    private final float[] mMVPMatrix = new float[16];
-    private final float[] mProjectionMatrix = new float[16];
-    private final float[] mViewMatrix = new float[16];
-    
-    @Override
-    public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+	// mMVPMatrix is an abbreviation for "Model View Projection Matrix"
+	private final float[] mMVPMatrix = new float[16];
+	private final float[] mProjectionMatrix = new float[16];
+	private final float[] mViewMatrix = new float[16];
 
-        // Set the background frame color
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-  
-        try {
+	@Override
+	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+
+		// Set the background frame color
+		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+		try {
 			mHeatmap = new GLHeatmap(480, 690, null, null, null);
 			mHeatmap.addPoint(100, 100, 100, 0.9f);
 			mHeatmap.addPoint(200, 100, 300, 0.9f);
 			mHeatmap.addPoint(300, 300, 100, 0.5f);			
 			mHeatmap.addPoint(300, 310, 100, 0.8f);			
 			mHeatmap.addPoint(300, 290, 100, 0.8f);
-        } catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
     }
 
-    @Override
-    public void onDrawFrame(GL10 unused) {
+	@Override
+	public void onDrawFrame(GL10 unused) {
 
-        // Draw background color
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+		// Draw background color
+		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
 		// Position the eye behind the origin.
 		final float eyeX = 0.0f;
@@ -61,24 +61,24 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 		// Set our up vector. This is where our head would be pointing were we holding the camera.
 		final float upX = 0.0f;
 		final float upY = 1.0f;
-		final float upZ = 0.0f;    
-        
-        // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
+		final float upZ = 0.0f;
 
-        // Calculate the projection and view transformation
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+		// Set the camera position (View matrix)
+		Matrix.setLookAtM(mViewMatrix, 0, eyeX, eyeY, eyeZ, lookX, lookY, lookZ, upX, upY, upZ);
 
-        mHeatmap.update();
-        mHeatmap.display();
-    }
+		// Calculate the projection and view transformation
+		Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
-    @Override
-    public void onSurfaceChanged(GL10 unused, int width, int height) {
+		mHeatmap.update();
+		mHeatmap.display();
+	}
+
+	@Override
+	public void onSurfaceChanged(GL10 unused, int width, int height) {
 Log.i(LOG, "width=" + width + ", height=" + height);    	
-        // Adjust the viewport based on geometry changes,
-        // such as screen rotation
-        GLES20.glViewport(0, 0, width, height);
+		// Adjust the viewport based on geometry changes,
+		// such as screen rotation
+		GLES20.glViewport(0, 0, width, height);
 
 		// Create a new perspective projection matrix. The height will stay the same
 		// while the width will vary as per aspect ratio.
@@ -90,37 +90,34 @@ Log.i(LOG, "width=" + width + ", height=" + height);
 		final float near = 3.0f;
 		final float far = 7.0f;
 		
-        // this projection matrix is applied to object coordinates
-        // in the onDrawFrame() method
-        Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
+		// this projection matrix is applied to object coordinates
+		// in the onDrawFrame() method
+		Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
 
-    }
+	}
 
-    /**
-    * Utility method for debugging OpenGL calls. Provide the name of the call
-    * just after making it:
-    *
-    * <pre>
-    * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
-    * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
-    *
-    * If the operation is not successful, the check throws an error.
-    *
-    * @param glOperation - Name of the OpenGL call to check.
-    */
-    public static void checkGlError(String glOperation) {
-        int error;
-        while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
-            Log.e(LOG, glOperation + ": glError " + error);
-            throw new RuntimeException(glOperation + ": glError " + error);
-        }
-    }
+	/**
+	 * Utility method for debugging OpenGL calls. Provide the name of the call
+	 * just after making it:
+	 *
+	 * <pre>
+	 * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+	 * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
+	 *
+	 * If the operation is not successful, the check throws an error.
+	 *
+	 * @param glOperation - Name of the OpenGL call to check.
+	 */
+	public static void checkGlError(String glOperation) {
+		int error;
+		while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
+			Log.e(LOG, glOperation + ": glError " + error);
+			throw new RuntimeException(glOperation + ": glError " + error);
+		}
+	}
 
-    /**
-     * Sets the rotation angle of the triangle shape (mTriangle).
-     */
-    public void onTouchEvent(float x, float y) {
-    	float i = (float) Math.random();
-    	mHeatmap.addPoint(x, y, 150, i);
-    }    
+	public void onTouchEvent(float x, float y) {
+		float i = (float) Math.random();
+		mHeatmap.addPoint(x, y, 150, i);
+	}
 }

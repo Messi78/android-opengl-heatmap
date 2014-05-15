@@ -11,31 +11,31 @@ import android.view.MotionEvent;
  */
 public class MyGLSurfaceView extends GLSurfaceView {
 
-    private final MyGLRenderer mRenderer;
+	private final MyGLRenderer mRenderer;
 
-    public MyGLSurfaceView(Context context) {
-        super(context);
+	public MyGLSurfaceView(Context context) {
+		super(context);
 
-        // Create an OpenGL ES 2.0 context.
-        setEGLContextClientVersion(2);
+		// Create an OpenGL ES 2.0 context.
+		setEGLContextClientVersion(2);
 
-        // Set the Renderer for drawing on the GLSurfaceView
-        mRenderer = new MyGLRenderer();
-        setRenderer(mRenderer);
+		// Set the Renderer for drawing on the GLSurfaceView
+		mRenderer = new MyGLRenderer();
+		setRenderer(mRenderer);
 
-        // Render the view only when there is a change in the drawing data
-        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-    }
+		// Render the view only when there is a change in the drawing data
+		setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+	}
 
 
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mRenderer.onTouchEvent(e.getX(), e.getY());
-                requestRender();
-        }
-        return true;
-    }
-    
+	@Override
+	public boolean onTouchEvent(MotionEvent e) {
+		switch (e.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+			mRenderer.onTouchEvent(e.getX(), e.getY());
+			requestRender();
+		}
+		return true;
+	}
+
 }

@@ -83,19 +83,14 @@ MyGLRenderer.checkGlError("glBlendFunc");
 		this.heights = new Heights(this, this.width, this.height);
 	}
 	
-//	void adjustSize() {
-//    var canvasHeight, canvasWidth;
-//    canvasWidth = this.canvas.offsetWidth || 2;
-//    canvasHeight = this.canvas.offsetHeight || 2;
-//    if (this.width !== canvasWidth || this.height !== canvasHeight) {
-//      this.gl.viewport(0, 0, canvasWidth, canvasHeight);
-//      this.canvas.width = canvasWidth;
-//      this.canvas.height = canvasHeight;
-//      this.width = canvasWidth;
-//      this.height = canvasHeight;
-//      return this.heights.resize(this.width, this.height);
-//    }
-//	}
+	public void adjustSize(int width, int height) {
+		if (this.width != width || this.height != height) {
+			this.width = width;
+			this.height = height;
+			GLES20.glViewport(0, 0, this.width, this.height);
+			this.heights.resize(this.width, this.height);
+		}
+	}
 	
 //	private String toFixed(double f, int newScale) {
 //		BigDecimal numberBigDecimal = new BigDecimal(f);
@@ -107,15 +102,15 @@ MyGLRenderer.checkGlError("glBlendFunc");
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.quad[Main.BUFFER_OFFSET]);
 		GLES20.glVertexAttribPointer(Main.BIND_ZERO, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, Main.BUFFER_OFFSET);
 		this.heights.nodeFront.bind(Main.BIND_ZERO);
-//	    if (this.gradientTexture != null) {
-//	        try {
+//		if (this.gradientTexture != null) {
+//			try {
 //				this.gradientTexture.bind(1);
 //			} catch (Exception e) {
 //				e.printStackTrace();
 //			}
-//	    }
-	    this.shader.use()._int(Main.VARIABLE_UNIFORM_SOURCE, Main.BIND_ZERO);
-	    GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.NUM_INDICES_RENDER);
+//		}
+		this.shader.use()._int(Main.VARIABLE_UNIFORM_SOURCE, Main.BIND_ZERO);
+		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.NUM_INDICES_RENDER);
 	}
 	
 	public void update() {

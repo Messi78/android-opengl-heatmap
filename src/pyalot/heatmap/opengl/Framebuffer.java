@@ -12,7 +12,7 @@ public class Framebuffer {
 		this.buffer = new int[Main.NUM_BUFFER];
 		GLES20.glGenFramebuffers(Main.NUM_BUFFER, this.buffer, Main.BUFFER_OFFSET);
 	}
-	
+
 	Framebuffer bind() {
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, this.buffer[Main.BUFFER_OFFSET]);
 MyGLRenderer.checkGlError("glBindFramebuffer");
@@ -23,7 +23,7 @@ MyGLRenderer.checkGlError("glBindFramebuffer");
 		GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, Main.BUFFER_NULL);
 		return this;
 	}	
-	
+
 	Framebuffer check() throws RuntimeException {
 		final int result = GLES20.glCheckFramebufferStatus(GLES20.GL_FRAMEBUFFER);
 		/*
@@ -48,17 +48,17 @@ MyGLRenderer.checkGlError("glBindFramebuffer");
 	Framebuffer color(Texture texture) {
 		GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0, texture.target, texture.handle[Main.BUFFER_OFFSET], Main.LEVEL);
 MyGLRenderer.checkGlError("glFramebufferTexture2D");
-	    try {
+		try {
 			this.check();
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 		}
-	    return this;
+		return this;
 	}
 
 //	void depth(MyBuffer buffer) {
 //		GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT, GLES20.GL_RENDERBUFFER, buffer.id);
-//	    try {
+//		try {
 //			this.check();
 //		} catch (Exception e) {
 //			e.printStackTrace();
