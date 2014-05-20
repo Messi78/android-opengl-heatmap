@@ -1,7 +1,7 @@
 ############
 ## Eclipse
 ############
- 
+
 .settings/
 #.project
 .classpath
@@ -10,7 +10,8 @@ bin/
 ############
 ## Android ADT
 ############
- 
+
 gen/
 res/values-*/
 project.properties
+.gltrace

@@ -8,6 +8,13 @@ Android OpenGL ES 2.0 implementation of [webgl-heatmap.js](http://github.com/pya
 
 (Note: Colorization does not work yet.)
 
+## Notes
+
+### Tracer for OpenGL ES configuration
+
+* Application package: `pyalot.heatmap.opengl`
+* Activity to launch: `org.example.heatmap.OpenGLES20Activity`
+
 WebGL Heatmap
 =============
 
