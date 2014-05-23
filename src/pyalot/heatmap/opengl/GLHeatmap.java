@@ -4,9 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import org.example.heatmap.MyGLRenderer;
-
-
 import android.opengl.GLES20;
 
 public class GLHeatmap {
@@ -24,51 +21,52 @@ public class GLHeatmap {
 		
 		// ...
 		GLES20.glEnableVertexAttribArray(Main.BIND_ZERO);
-MyGLRenderer.checkGlError("glEnableVertexAttribArray");
+		//MyGLRenderer.checkGlError("glEnableVertexAttribArray");
 		GLES20.glBlendFunc(GLES20.GL_ONE, GLES20.GL_ONE);
-MyGLRenderer.checkGlError("glBlendFunc");
+		//MyGLRenderer.checkGlError("glBlendFunc");
 // ...
 		String getColorFun  =
-				"vec3 getColor(float intensity){						\n" +
-				"    vec3 blue   = vec3(0.0, 0.0, 1.0);					\n" +
-				"    vec3 cyan   = vec3(0.0, 1.0, 1.0);					\n" +
-				"    vec3 green  = vec3(0.0, 1.0, 0.0);					\n" +
-				"    vec3 yellow = vec3(1.0, 1.0, 0.0);					\n" +
-				"    vec3 red    = vec3(1.0, 0.0, 0.0);					\n" +
-				"    \n" +
-				"    vec3 color = (\n" +
-				"        fade(-0.25, 0.25, intensity)*blue +			\n" +
-				"        fade(  0.0,  0.5, intensity)*cyan +			\n" +
-				"        fade( 0.25, 0.75, intensity)*green +			\n" +
-				"        fade(  0.5,  1.0, intensity)*yellow +			\n" +
-				"        smoothstep(0.75, 1.0, intensity)*red			\n" +
-				"    );													\n" +
-				"    return color;										\n" +
-				"}";
+			"vec3 getColor(float intensity){						\n" +
+			"    vec3 blue   = vec3(0.0, 0.0, 1.0);					\n" +
+			"    vec3 cyan   = vec3(0.0, 1.0, 1.0);					\n" +
+			"    vec3 green  = vec3(0.0, 1.0, 0.0);					\n" +
+			"    vec3 yellow = vec3(1.0, 1.0, 0.0);					\n" +
+			"    vec3 red    = vec3(1.0, 0.0, 0.0);					\n" +
+			"    \n" +
+			"    vec3 color = (\n" +
+			"        fade(-0.25, 0.25, intensity)*blue +			\n" +
+			"        fade(  0.0,  0.5, intensity)*cyan +			\n" +
+			"        fade( 0.25, 0.75, intensity)*green +			\n" +
+			"        fade(  0.5,  1.0, intensity)*yellow +			\n" +
+			"        smoothstep(0.75, 1.0, intensity)*red			\n" +
+			"    );													\n" +
+			"    return color;										\n" +
+			"}";
 // ...
 		String output = 
-				"vec4 alphaFun(vec3 color, float intensity){			\n" +
-				"    float alpha = smoothstep(0.0, 1.0, intensity);		\n" +
-				"    return vec4(color*alpha, alpha);					\n" +
-				"}";
+			"vec4 alphaFun(vec3 color, float intensity){			\n" +
+			"    float alpha = smoothstep(0.0, 1.0, intensity);		\n" +
+			"    return vec4(color*alpha, alpha);					\n" +
+			"}";
 // ...
 		this.shader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
-				"float linstep(float low, float high, float value){		\n" +
-				"    return clamp((value-low)/(high-low), 0.0, 1.0);	\n" +
-				"}\n" +
-				"\n" +
-				"float fade(float low, float high, float value){		\n" +
-				"    float mid   = (low+high)*0.5;						\n" +
-				"    float range = (high-low)*0.5;\n" +
-				"    float x = 1.0 - clamp(abs(mid-value)/range, 0.0, 1.0);\n" +
-				"    return smoothstep(0.0, 1.0, x);\n}\n" +
-				"\n" + getColorFun + "\n" + output + "\n" +
-				"\n" +
-				"void main(){\n" +
-				"    float intensity = smoothstep(0.0, 1.0, texture2D(source, texcoord).r);\n" +
-				"    vec3 color = getColor(intensity);\n" +
-				"    gl_FragColor = alphaFun(color, intensity);\n" +
-				"}");
+//			"float linstep(float low, float high, float value){		\n" +
+//			"    return clamp((value-low)/(high-low), 0.0, 1.0);	\n" +
+//			"}\n" +
+//			"\n" +
+			"float fade(float low, float high, float value){		\n" +
+			"    float mid   = (low+high)*0.5;						\n" +
+			"    float range = (high-low)*0.5;						\n" +
+			"    float x = 1.0 - clamp(abs(mid-value)/range, 0.0, 1.0);\n" +
+			"    return smoothstep(0.0, 1.0, x);					\n" +
+			"}\n" +
+			"\n" + getColorFun + "\n" + output + "\n" +
+			"\n" +
+			"void main(){\n" +
+			"    float intensity = smoothstep(0.0, 1.0, texture2D(source, texcoord).r);\n" +
+			"    vec3 color = getColor(intensity);\n" +
+			"    gl_FragColor = alphaFun(color, intensity);\n" +
+			"}");
 // ...
 		GLES20.glViewport(0, 0, this.width, this.height);
 		this.quad = new int[Main.NUM_BUFFER];

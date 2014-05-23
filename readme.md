@@ -15,6 +15,21 @@ Android OpenGL ES 2.0 implementation of [webgl-heatmap.js](http://github.com/pya
 * Application package: `pyalot.heatmap.opengl`
 * Activity to launch: `org.example.heatmap.OpenGLES20Activity`
 
+### Progress
+
+Java Code equivalent to JS code
+* Framebuffer
+* GLHeatmap (didn't set depth and antialias, glBlendFunc right?; quad_l as FloatBuffer?)
+* Heights (Update glVertexAttribPointer)
+* Main
+* Node
+* Shader
+* Texture
+
+GL code works
+
+* getColor function works
+
 WebGL Heatmap
 =============
 

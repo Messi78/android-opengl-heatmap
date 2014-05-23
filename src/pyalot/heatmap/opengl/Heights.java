@@ -3,6 +3,9 @@ package pyalot.heatmap.opengl;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+
+import org.example.heatmap.MyGLRenderer;
+
 import android.opengl.GLES20;
 import android.util.Log;
 
@@ -27,32 +30,32 @@ public class Heights {
 		this.width = width;
 		this.height = height;
 		this.shader = new Shader(
-				"attribute vec4 position, intensity;		\n" +
-				"varying vec2 off, dim;						\n" +
-				"varying float vIntensity;					\n" +
-				"uniform vec2 viewport;						\n" +
-				"											\n" +
-				"void main(){								\n" +
-				"    dim = abs(position.zw);				\n" +
-				"    off = position.zw;						\n" +
-				"    vec2 pos = position.xy + position.zw;	\n" +
-				"    vIntensity = intensity.x;				\n" +
-				"    gl_Position = vec4((pos/viewport)*2.0-1.0, 0.0, 1.0);\n" +
-				"}",
-				"#ifdef GL_FRAGMENT_PRECISION_HIGH			\n" +
-				"    precision highp int;					\n" +
-				"    precision highp float;					\n" +
-				"#else										\n" +
-				"    precision mediump int;					\n" +
-				"    precision mediump float;				\n" +
-				"#endif										\n" +
-				"varying vec2 off, dim;						\n" +
-				"varying float vIntensity;					\n" +
-				"void main(){								\n" +
-				"    float falloff = (1.0 - smoothstep(0.0, 1.0, length(off/dim)));\n" +
-				"    float intensity = falloff*vIntensity;	\n" +
-				"    gl_FragColor = vec4(intensity);		\n" +
-				"}");
+			"attribute vec4 position, intensity;		\n" +
+			"varying vec2 off, dim;						\n" +
+			"varying float vIntensity;					\n" +
+			"uniform vec2 viewport;						\n" +
+			"											\n" +
+			"void main(){								\n" +
+			"    dim = abs(position.zw);				\n" +
+			"    off = position.zw;						\n" +
+			"    vec2 pos = position.xy + position.zw;	\n" +
+			"    vIntensity = intensity.x;				\n" +
+			"    gl_Position = vec4((pos/viewport)*2.0-1.0, 0.0, 1.0);\n" +
+			"}",
+			"#ifdef GL_FRAGMENT_PRECISION_HIGH			\n" +
+			"    precision highp int;					\n" +
+			"    precision highp float;					\n" +
+			"#else										\n" +
+			"    precision mediump int;					\n" +
+			"    precision mediump float;				\n" +
+			"#endif										\n" +
+			"varying vec2 off, dim;						\n" +
+			"varying float vIntensity;					\n" +
+			"void main(){								\n" +
+			"    float falloff = (1.0 - smoothstep(0.0, 1.0, length(off/dim)));\n" +
+			"    float intensity = falloff*vIntensity;	\n" +
+			"    gl_FragColor = vec4(intensity);		\n" +
+			"}");
 //		this.clampShader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
 //				"uniform float low, high;					\n" +
 //				"void main(){								\n" +
@@ -98,17 +101,24 @@ public class Heights {
 			GLES20.glEnable(GLES20.GL_BLEND);
 			this.nodeFront.use();
 			GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.vertexBuffer[0]);
+			//MyGLRenderer.checkGlError("glBindBuffer");
 			this.vertexBufferData.position(0);
 			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.vertexBufferData.capacity() * Main.BYTES_PER_FLOAT, this.vertexBufferData, GLES20.GL_STREAM_DRAW);
-			int positionLoc = this.shader.attribLocation(Main.VARIABLE_ATTRIBUTE_POSITION);
-			int intensityLoc = this.shader.attribLocation(Main.VARIABLE_ATTRIBUTE_INTENSITY);
-Log.i(LOG, positionLoc + "_" + intensityLoc);
+			MyGLRenderer.checkGlError("glBufferData");			
+//			int positionLoc = this.shader.attribLocation(Main.VARIABLE_ATTRIBUTE_POSITION);
+//			int intensityLoc = this.shader.attribLocation(Main.VARIABLE_ATTRIBUTE_INTENSITY);
+			//Log.i(LOG, positionLoc + "_" + intensityLoc);
 			GLES20.glEnableVertexAttribArray(1);
-			GLES20.glVertexAttribPointer(positionLoc, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, Main.STRIDE_BYTES, 0 * Main.POSITION_DATA_SIZE);
-			GLES20.glVertexAttribPointer(intensityLoc, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, Main.STRIDE_BYTES, Main.BYTES_PER_FLOAT * Main.POSITION_DATA_SIZE);
+			//MyGLRenderer.checkGlError("glEnableVertexAttribArray");	
+			GLES20.glVertexAttribPointer(0, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, Main.STRIDE_BYTES, 0 * Main.POSITION_DATA_SIZE);
+			//MyGLRenderer.checkGlError("glVertexAttribPointer");	
+			GLES20.glVertexAttribPointer(1, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, Main.STRIDE_BYTES, Main.BYTES_PER_FLOAT * Main.POSITION_DATA_SIZE);
+			//MyGLRenderer.checkGlError("glVertexAttribPointer");	
 			this.shader.use().vec2(Main.VARIABLE_UNIFORM_VIEWPORT, this.width, this.height);
 			GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.pointCount * Main.NUM_INDICES_RENDER);
+			//MyGLRenderer.checkGlError("glDrawArrays");	
 			GLES20.glDisableVertexAttribArray(1);
+			//MyGLRenderer.checkGlError("glDisableVertexAttribArray");	
 			this.pointCount = 0;
 			this.bufferIndex = 0;
 			this.nodeFront.end();
@@ -157,13 +167,15 @@ Log.i(LOG, positionLoc + "_" + intensityLoc);
 //	}
 	
 	void swap() {
+Log.w(LOG, this.nodeBack.toString() + this.nodeBack.toString());		
 		Node tmp = this.nodeFront;
 		this.nodeFront = this.nodeBack;
 		this.nodeBack = tmp;
+Log.w(LOG, this.nodeBack.toString() + this.nodeBack.toString());		
 	}
 	
 	void addVertex(float x, float y, float xs, float ys, float intensity) {
-		Log.i("addVertex", bufferIndex+ "_" + x + "_" + y + "_" + xs + "_" + ys + "_" + intensity);
+		//Log.i("addVertex", bufferIndex+ "_" + x + "_" + y + "_" + xs + "_" + ys + "_" + intensity);
 		this.vertexBufferData.put(this.bufferIndex++, x);
 		this.vertexBufferData.put(this.bufferIndex++, y);
 		this.vertexBufferData.put(this.bufferIndex++, xs);

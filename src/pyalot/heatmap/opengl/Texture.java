@@ -1,7 +1,5 @@
 package pyalot.heatmap.opengl;
 
-import org.example.heatmap.MyGLRenderer;
-
 import android.opengl.GLES20;
 
 public class Texture {
@@ -46,7 +44,7 @@ public class Texture {
 		GLES20.glDeleteTextures(Main.NUM_BUFFER, this.handle, Main.BUFFER_OFFSET);
 	}
 	
-	Texture bind(final int unit) throws RuntimeException {
+	Texture bind(int unit) throws RuntimeException {
 		if (unit > 15) {
 			throw new RuntimeException("Texture unit too large: " + unit);
 		}
@@ -59,7 +57,7 @@ public class Texture {
 		this.width = width;
 		this.height = height;
 		GLES20.glTexImage2D(this.target, Main.LEVEL, this.channels, this.width, this.height, 0, this.channels, this.type, null);
-MyGLRenderer.checkGlError("glTexImage2D");
+		//MyGLRenderer.checkGlError("glTexImage2D");
 		return this;
 	}
 	

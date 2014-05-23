@@ -3,17 +3,14 @@ package pyalot.heatmap.opengl;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.example.heatmap.MyGLRenderer;
-
-
 import android.opengl.GLES20;
 import android.util.Log;
 
 public class Shader {
 
-	private Map<String, Integer> attribCache;
+//	private Map<String, Integer> attribCache;
 	private Map<String, Integer> uniform_cache;
-	private Map<String, Float> value_cache;
+	private Map<String, Integer> value_cache;
 	private int program;
 	private int vs;
 	private int fs;
@@ -21,36 +18,36 @@ public class Shader {
 	public Shader(final String vertex, final String fragment) throws RuntimeException {
 		this.program = GLES20.glCreateProgram();
 		this.vs = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
-if (this.vs == 0) throw new RuntimeException("Error creating vertex shader.");
+		//if (this.vs == 0) throw new RuntimeException("Error creating vertex shader.");
 		this.fs = GLES20.glCreateShader(GLES20.GL_FRAGMENT_SHADER);
-if (this.fs == 0) throw new RuntimeException("Error creating fragment shader.");
+		//if (this.fs == 0) throw new RuntimeException("Error creating fragment shader.");
 		GLES20.glAttachShader(this.program, this.vs);
 		GLES20.glAttachShader(this.program, this.fs);
 // Bind attributes
-GLES20.glBindAttribLocation(this.program, 0, Main.VARIABLE_ATTRIBUTE_POSITION);
 GLES20.glBindAttribLocation(this.program, 1, Main.VARIABLE_ATTRIBUTE_INTENSITY);
+GLES20.glBindAttribLocation(this.program, 0, Main.VARIABLE_ATTRIBUTE_POSITION);
 
 		this.compileShader(this.vs, vertex);
 		this.compileShader(this.fs, fragment);
 		this.link();
-		this.value_cache = new HashMap<String, Float>();
+		this.value_cache = new HashMap<String, Integer>();
 		this.uniform_cache = new HashMap<String, Integer>();
-		this.attribCache = new HashMap<String, Integer>();
+//		this.attribCache = new HashMap<String, Integer>();
 	}
 
-	public int attribLocation(final String name) {
-		Integer location = this.attribCache.get(name);
-		if (location == null) {
-			location = GLES20.glGetAttribLocation(this.program, name);
-if (location <0 ) {
-	Log.e("attribLocation", "negative location: " + location);
-}
-			this.attribCache.put(name, location);
-		}
-		return location;
-	}
+//	public int attribLocation(final String name) {
+//		Integer location = this.attribCache.get(name);
+//		if (location == null) {
+//			location = GLES20.glGetAttribLocation(this.program, name);
+//if (location <0 ) {
+//	Log.e("attribLocation", "negative location: " + location);
+//}
+//			this.attribCache.put(name, location);
+//		}
+//		return location;
+//	}
 
-	void compileShader(final int shader, final String source) throws RuntimeException {
+	void compileShader(int shader, String source) throws RuntimeException {
 		GLES20.glShaderSource(shader, source);
 		GLES20.glCompileShader(shader);
 		int[] compileStatus = new int[1];
@@ -74,7 +71,7 @@ if (location <0 ) {
 		return this;
 	}
 	
-	int uniformLoc(final String name) {
+	int uniformLoc(String name) {
 		Integer location = this.uniform_cache.get(name);
 		if (location == null) {
 			location = GLES20.glGetUniformLocation(this.program, name);
@@ -87,13 +84,13 @@ if (location < 0) {
 	}
 	
 	Shader _int(final String name, int value) {
-		Float cached = this.value_cache.get(name);
-		if ((cached == null) || (Math.round(cached) != value)) {
-			this.value_cache.put(name, (float) value);
+		Integer cached = this.value_cache.get(name);
+		if ((cached == null) || (cached != value)) {
+			this.value_cache.put(name, value);
 			int loc = this.uniformLoc(name);
 			if (loc >= 0) {
 				GLES20.glUniform1i(loc, value);
-MyGLRenderer.checkGlError("glUniform1i");
+				//MyGLRenderer.checkGlError("glUniform1i");
 			}
 		}
 		return this;
@@ -103,7 +100,7 @@ MyGLRenderer.checkGlError("glUniform1i");
 		int loc = this.uniformLoc(name);
 		if (loc >= 0) {
 			GLES20.glUniform2f(loc, a, b);
-MyGLRenderer.checkGlError("glUniform2f");		
+			//MyGLRenderer.checkGlError("glUniform2f");
 		}
 		return this;
 	}

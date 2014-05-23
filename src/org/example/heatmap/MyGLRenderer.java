@@ -32,11 +32,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 		try {
 			mHeatmap = new GLHeatmap(480, 690, null, null, null);
-			mHeatmap.addPoint(100, 100, 100, 0.9f);
-			mHeatmap.addPoint(200, 100, 300, 0.9f);
-			mHeatmap.addPoint(300, 300, 100, 0.5f);			
-			mHeatmap.addPoint(300, 310, 100, 0.8f);			
-			mHeatmap.addPoint(300, 290, 100, 0.8f);
+			mHeatmap.addPoint(200, 100, 100, 0.8f);
+			mHeatmap.addPoint(200, 160, 100, 0.7f);
+			mHeatmap.addPoint(300, 310, 100, 0.5f);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,6 +116,7 @@ Log.i(LOG, "width=" + width + ", height=" + height);
 
 	public void onTouchEvent(float x, float y) {
 		float i = (float) Math.random();
+		Log.i(LOG, "intensity=" + i);
 		mHeatmap.addPoint(x, y, 150, i);
 	}
 }
