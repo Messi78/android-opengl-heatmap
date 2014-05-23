@@ -21,8 +21,7 @@ Framebuffer = (function() {
   };
 
   Framebuffer.prototype.check = function() {
-    var result;
-    result = this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
+    var result = this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
     switch (result) {
       case this.gl.FRAMEBUFFER_UNSUPPORTED:
         throw 'Framebuffer is unsupported';

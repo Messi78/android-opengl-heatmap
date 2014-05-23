@@ -2,16 +2,15 @@ var Shader;
 
 Shader = (function() {
   function Shader(gl, _arg) {
-    var fragment, vertex;
     this.gl = gl;
-    vertex = _arg.vertex, fragment = _arg.fragment;
+    var vertex = _arg.vertex, fragment = _arg.fragment;
     this.program = this.gl.createProgram();
     this.vs = this.gl.createShader(this.gl.VERTEX_SHADER);
     this.fs = this.gl.createShader(this.gl.FRAGMENT_SHADER);
     this.gl.attachShader(this.program, this.vs);
+    this.gl.attachShader(this.program, this.fs);
 this.gl.bindAttribLocation(this.program, 1, "intensity");
 this.gl.bindAttribLocation(this.program, 0, "position");	
-    this.gl.attachShader(this.program, this.fs);
     this.compileShader(this.vs, vertex);
     this.compileShader(this.fs, fragment);
     this.link();
@@ -50,8 +49,7 @@ this.gl.bindAttribLocation(this.program, 0, "position");
   };
 
   Shader.prototype.uniformLoc = function(name) {
-    var location;
-    location = this.uniform_cache[name];
+    var location = this.uniform_cache[name];
     if (location === void 0) {
       location = this.uniform_cache[name] = this.gl.getUniformLocation(this.program, name);
     }
@@ -59,11 +57,10 @@ this.gl.bindAttribLocation(this.program, 0, "position");
   };
 
   Shader.prototype.int = function(name, value) {
-    var cached, loc;
-    cached = this.value_cache[name];
+    var cached = this.value_cache[name];
     if (cached !== value) {
       this.value_cache[name] = value;
-      loc = this.uniformLoc(name);
+      var loc = this.uniformLoc(name);
       if (loc) {
         this.gl.uniform1i(loc, value);
       }

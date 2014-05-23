@@ -2,37 +2,36 @@ var Heights;
 
 Heights = (function() {
   function Heights(heatmap, gl, width, height) {
-    this.heatmap = heatmap;
     this.gl = gl;
     this.width = width;
     this.height = height;
     this.shader = new Shader(this.gl, {
-      vertex: "attribute vec4 position, intensity;	\n" +
-				"varying vec2 off, dim;					\n" +
-				"varying float vIntensity;				\n" +
-				"uniform vec2 viewport;					\n" +
-				"										\n" +
-				"void main(){							\n" +
-				"    dim = abs(position.zw);			\n" +
-				"    off = position.zw;					\n" +
-				"    vec2 pos = position.xy + position.zw;\n" +
-				"    vIntensity = intensity.x;			\n" +
-				"    gl_Position = vec4((pos/viewport)*2.0-1.0, 0.0, 1.0);\n" +
-				"}",
-      fragment: "#ifdef GL_FRAGMENT_PRECISION_HIGH		\n" +
-				"    precision highp int;				\n" +
-				"    precision highp float;				\n" +
-				"#else									\n" +
-				"    precision mediump int;				\n" +
-				"    precision mediump float;			\n" +
-				"#endif									\n" +
-				"varying vec2 off, dim;					\n" +
-				"varying float vIntensity;				\n" +
-				"void main(){							\n" +
-				"    float falloff = (1.0 - smoothstep(0.0, 1.0, length(off/dim)));\n" +
-				"    float intensity = falloff*vIntensity;\n" +
-				"    gl_FragColor = vec4(intensity);	\n" +
-				"}"
+      vertex: "attribute vec4 position, intensity;		\n" +
+			"varying vec2 off, dim;						\n" +
+			"varying float vIntensity;					\n" +
+			"uniform vec2 viewport;						\n" +
+			"											\n" +
+			"void main(){								\n" +
+			"    dim = abs(position.zw);				\n" +
+			"    off = position.zw;						\n" +
+			"    vec2 pos = position.xy + position.zw;	\n" +
+			"    vIntensity = intensity.x;				\n" +
+			"    gl_Position = vec4((pos/viewport)*2.0-1.0, 0.0, 1.0);\n" +
+			"}",
+      fragment: "#ifdef GL_FRAGMENT_PRECISION_HIGH			\n" +
+			"    precision highp int;					\n" +
+			"    precision highp float;					\n" +
+			"#else										\n" +
+			"    precision mediump int;					\n" +
+			"    precision mediump float;				\n" +
+			"#endif										\n" +
+			"varying vec2 off, dim;						\n" +
+			"varying float vIntensity;					\n" +
+			"void main(){								\n" +
+			"    float falloff = (1.0 - smoothstep(0.0, 1.0, length(off/dim)));\n" +
+			"    float intensity = falloff*vIntensity;	\n" +
+			"    gl_FragColor = vec4(intensity);		\n" +
+			"}"
     });
     this.nodeBack = new Node(this.gl, this.width, this.height);
     this.nodeFront = new Node(this.gl, this.width, this.height);
@@ -72,8 +71,7 @@ Heights = (function() {
   };
 
   Heights.prototype.swap = function() {
-    var tmp;
-    tmp = this.nodeFront;
+    var tmp = this.nodeFront;
     this.nodeFront = this.nodeBack;
     return this.nodeBack = tmp;
   };
