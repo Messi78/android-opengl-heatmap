@@ -8,12 +8,27 @@ import android.opengl.GLES20;
 
 public class GLHeatmap {
 
-	private Shader shader;
+	/** Width of the viewport */
 	private Integer width;
+	/** Height of the viewport */
 	private Integer height;
+	/** Array which stores the generated buffer object names */
 	private int[] quad;
+	/** A Heights */
 	private Heights heights;
-		
+	/** A Shader */
+	private Shader shader;
+	
+	/**
+	 * Create a GLHeatmap object.
+	 * 
+	 * @param width Width of the viewport
+	 * @param height Height of the viewport
+	 * @param intensityToAlpha Not in use
+	 * @param gradientTexture Not in use
+	 * @param alphaRange Not in use
+	 * @throws Exception
+	 */
 	public GLHeatmap(final int width, final int height, Boolean intensityToAlpha, Object gradientTexture, float[] alphaRange) throws Exception {
 
 		this.width = width;
@@ -81,6 +96,12 @@ public class GLHeatmap {
 		this.heights = new Heights(this, this.width, this.height);
 	}
 	
+	/**
+	 * Set a new size.
+	 * 
+	 * @param width Width of the viewport.
+	 * @param height Height of the viewport.
+	 */
 	public void adjustSize(int width, int height) {
 		if (this.width != width || this.height != height) {
 			this.width = width;
@@ -96,6 +117,9 @@ public class GLHeatmap {
 //		return numberBigDecimal.toString();
 //	}
 	
+	/**
+	 * Display the heatmap.
+	 */
 	public void display() {
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.quad[Main.BUFFER_OFFSET]);
 		GLES20.glVertexAttribPointer(Main.BIND_ZERO, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, Main.BUFFER_OFFSET);
@@ -111,10 +135,16 @@ public class GLHeatmap {
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.NUM_INDICES_RENDER);
 	}
 	
+	/**
+	 * Update the {@link Heights} object by call {@link Heights#update()}.
+	 */
 	public void update() {
 		this.heights.update();
 	}
 	
+	/**
+	 * Clear the {@link Heights} by call {@link Heights#clear()}.
+	 */
 	public void clear() {
 		this.heights.clear();
 	}
@@ -139,7 +169,11 @@ public class GLHeatmap {
 //	public void blur() {
 //		this.heights.blur();
 //	}
-	
+
+	/* (non-Javadoc)
+	 * 
+	 * @see Heights#addPoint(float, float, float, float);
+	 */
 	public void addPoint(float x, float y, float size, float intensity) {
 		this.heights.addPoint(x, y, size, intensity);
 	}

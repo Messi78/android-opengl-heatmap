@@ -4,14 +4,27 @@ import android.opengl.GLES20;
 
 public class Texture {
 
+	/** Format of the pixel data */
 	private int channels;
+	/** Data type of the pixel data */
 	private int type;
 //	private int chancount;
+	/** Target texture */
 	int target;
+	/**  Array which stores the generated texture names */
 	int[] handle;
+	/** Width of the viewport */
 	private int width;
+	/** Height of the viewport */
 	private int height;
 	
+	/**
+	 * Create a Texture object. The constructor sets the {@code channels} and
+	 * {@code target} and generates a texture.
+	 * 
+	 * @param type
+	 * @param channels
+	 */
 	public Texture(Integer type, String channels) {
 // TODO:
 		this.channels = GLES20.GL_RGBA;
@@ -40,10 +53,20 @@ public class Texture {
 		GLES20.glGenTextures(Main.NUM_BUFFER, this.handle, Main.BUFFER_OFFSET);
 	}
 	
+	/**
+	 * Delete the texture.
+	 */
 	void destroy() {
 		GLES20.glDeleteTextures(Main.NUM_BUFFER, this.handle, Main.BUFFER_OFFSET);
 	}
 	
+	/**
+	 * Activate and bind the texture.
+	 * 
+	 * @param unit Texture unit
+	 * @return This
+	 * @throws RuntimeException
+	 */
 	Texture bind(int unit) throws RuntimeException {
 		if (unit > 15) {
 			throw new RuntimeException("Texture unit too large: " + unit);
@@ -53,6 +76,13 @@ public class Texture {
 		return this;
 	}
 	
+	/**
+	 * Set a new size.
+	 * 
+	 * @param width Width of the viewport
+	 * @param height Height of the viewport
+	 * @return This
+	 */
 	Texture setSize(final int width, final int height) {
 		this.width = width;
 		this.height = height;

@@ -7,25 +7,39 @@ import java.nio.FloatBuffer;
 import org.example.heatmap.MyGLRenderer;
 
 import android.opengl.GLES20;
-import android.util.Log;
 
 public class Heights {
 	
+	/** Width of the viewport */
 	private int width;
+	/** Height of the viewport */
 	private int height;
 	private Shader shader;
 //	private Shader clampShader;
 //	private Shader multiplyShader;
 //	private Shader blurShader;
+	/** A Node */
 	private Node nodeBack;
+	/** A node */
 	Node nodeFront;
+	/** Array which stores the generated buffer object names */
 	private int[] vertexBuffer;
 //	private int maxPointCount;
 	private FloatBuffer vertexBufferData;
+	/** Stores the current index position in the {@code vertexBufferData} */
 	private int bufferIndex;
+	/** Number of points added to the  {@code vertexBufferData} */
 	private int pointCount;
+	@SuppressWarnings("unused")
 	private static final String LOG = "Heights";
 	
+	/**
+	 * Create a Height object.
+	 * 
+	 * @param heatmap A heatmap
+	 * @param width Width of the viewport
+	 * @param height Height of the viewport
+	 */
 	public Heights(GLHeatmap heatmap, final int width, final int height) {
 		this.width = width;
 		this.height = height;
@@ -89,6 +103,12 @@ public class Heights {
 		this.pointCount = 0;
 	}
 
+	/**
+	 * Set new size.
+	 *  
+	 * @param width Width of the viewport
+	 * @param height Height of the viewport
+	 */
 	void resize(final int width, final int height) {
 		this.width = width;
 		this.height = height;
@@ -96,6 +116,9 @@ public class Heights {
 		this.nodeFront.resize(this.width, this.height);
 	};
 	
+	/**
+	 * Update the heatmap, i.e. draw all buffered points from the {code vertexBufferData}.
+	 */
 	public void update() {
 		if (this.pointCount > 0) {
 			GLES20.glEnable(GLES20.GL_BLEND);
@@ -126,6 +149,9 @@ public class Heights {
 		}
 	}
 
+	/**
+	 * Clear color and buffer.
+	 */
 	public void clear() {
 		this.nodeFront.use();
 		GLES20.glClearColor(0, 0, 0, 1);
@@ -166,15 +192,22 @@ public class Heights {
 //		this.swap();
 //	}
 	
-	void swap() {
-Log.w(LOG, this.nodeBack.toString() + this.nodeBack.toString());		
-		Node tmp = this.nodeFront;
-		this.nodeFront = this.nodeBack;
-		this.nodeBack = tmp;
-Log.w(LOG, this.nodeBack.toString() + this.nodeBack.toString());		
-	}
+//	private void swap() {
+//		Node tmp = this.nodeFront;
+//		this.nodeFront = this.nodeBack;
+//		this.nodeBack = tmp;
+//	}
 	
-	void addVertex(float x, float y, float xs, float ys, float intensity) {
+	/**
+	 * Add a point to the vertex buffer.
+	 * 
+	 * @param x x-coordinate of the point
+	 * @param y y-coordinate of the point
+	 * @param xs
+	 * @param ys
+	 * @param intensity intensity (>= 0 and <=1) of the point
+	 */
+	private void addVertex(float x, float y, float xs, float ys, float intensity) {
 		//Log.i("addVertex", bufferIndex+ "_" + x + "_" + y + "_" + xs + "_" + ys + "_" + intensity);
 		this.vertexBufferData.put(this.bufferIndex++, x);
 		this.vertexBufferData.put(this.bufferIndex++, y);
@@ -186,6 +219,14 @@ Log.w(LOG, this.nodeBack.toString() + this.nodeBack.toString());
 		this.vertexBufferData.put(this.bufferIndex++, intensity);
 	}
 
+	/**
+	 * Add a point to the heatmap.
+	 * 
+	 * @param x x-coordinate
+	 * @param y y-coordinate
+	 * @param size Size (diameter)
+	 * @param intensity Intensity (>= 0 and <= 1)
+	 */
 	public void addPoint(float x, float y, float size, float intensity) {
 		if (this.pointCount >= 1) {
 			this.update();

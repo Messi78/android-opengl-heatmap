@@ -29,15 +29,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 		// Set the background frame color
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-		try {
-			mHeatmap = new GLHeatmap(480, 690, null, null, null);
-			mHeatmap.addPoint(200, 100, 100, 0.8f);
-			mHeatmap.addPoint(200, 160, 100, 0.7f);
-			mHeatmap.addPoint(300, 310, 100, 0.5f);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
     }
 
 	@Override
@@ -74,6 +65,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 	@Override
 	public void onSurfaceChanged(GL10 unused, int width, int height) {
 Log.i(LOG, "width=" + width + ", height=" + height);    	
+
+
+		try {
+			if (mHeatmap == null) {
+				mHeatmap = new GLHeatmap(width, height, null, null, null);
+				mHeatmap.addPoint(200, 100, 100, 0.8f);
+				mHeatmap.addPoint(200, 160, 100, 0.7f);
+				mHeatmap.addPoint(300, 310, 100, 0.5f);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		// Adjust the viewport based on geometry changes,
 		// such as screen rotation
 		GLES20.glViewport(0, 0, width, height);
@@ -116,6 +120,7 @@ Log.i(LOG, "width=" + width + ", height=" + height);
 
 	public void onTouchEvent(float x, float y) {
 		float i = (float) Math.random();
+		if (i < 0.4) i = 0.4f;
 		Log.i(LOG, "intensity=" + i);
 		mHeatmap.addPoint(x, y, 150, i);
 	}

@@ -9,12 +9,25 @@ import android.util.Log;
 public class Shader {
 
 //	private Map<String, Integer> attribCache;
+	/** Caches the location of uniform variables */
 	private Map<String, Integer> uniform_cache;
+	/** Cache the value of uniform integer variables */
 	private Map<String, Integer> value_cache;
+	/** Handle of the created program object */
 	private int program;
+	/** Stores the name of the created shader object */
 	private int vs;
+	/** Stores the name of the created shader object */
 	private int fs;
 	
+	/**
+	 * Create a Shader object. The constructor creates a program and two
+	 * shaders, which gets compiled and linked.
+	 * 
+	 * @param vertex
+	 * @param fragment
+	 * @throws RuntimeException
+	 */
 	public Shader(final String vertex, final String fragment) throws RuntimeException {
 		this.program = GLES20.glCreateProgram();
 		this.vs = GLES20.glCreateShader(GLES20.GL_VERTEX_SHADER);
@@ -47,6 +60,13 @@ GLES20.glBindAttribLocation(this.program, 0, Main.VARIABLE_ATTRIBUTE_POSITION);
 //		return location;
 //	}
 
+	/**
+	 * Compile the given shader and check for errors afterwards.
+	 * 
+	 * @param shader
+	 * @param source
+	 * @throws RuntimeException
+	 */
 	void compileShader(int shader, String source) throws RuntimeException {
 		GLES20.glShaderSource(shader, source);
 		GLES20.glCompileShader(shader);
@@ -57,6 +77,11 @@ GLES20.glBindAttribLocation(this.program, 0, Main.VARIABLE_ATTRIBUTE_POSITION);
 		}
 	}
 	
+	/**
+	 * Link the {@code program} and check for errors afterwards.
+	 * 
+	 * @throws RuntimeException
+	 */
 	void link() throws RuntimeException {
 		GLES20.glLinkProgram(this.program);
 		int[] linkStatus = new int[1];
@@ -66,11 +91,23 @@ GLES20.glBindAttribLocation(this.program, 0, Main.VARIABLE_ATTRIBUTE_POSITION);
 		}
 	}
 	
+	/**
+	 * Use the {@code program} object.
+	 * 
+	 * @return This
+	 */
 	public Shader use() {
 		GLES20.glUseProgram(this.program);
 		return this;
 	}
 	
+	/**
+	 * Get the location of the given uniform variable. The location gets stored
+	 * in the {@code uniform_cache}.
+	 * 
+	 * @param name Name of the uniform variable
+	 * @return Location of the uniform variable
+	 */
 	int uniformLoc(String name) {
 		Integer location = this.uniform_cache.get(name);
 		if (location == null) {
@@ -83,6 +120,14 @@ if (location < 0) {
 		return location;
 	}
 	
+	/**
+	 * Specify the value of a uniform variable for the current program object,
+	 * if the value differentiate from the corresponding cached value.
+	 * 
+	 * @param name Name of the uniform variable
+	 * @param value Value for the given uniform variable
+	 * @return This
+	 */	
 	Shader _int(final String name, int value) {
 		Integer cached = this.value_cache.get(name);
 		if ((cached == null) || (cached != value)) {
@@ -96,6 +141,14 @@ if (location < 0) {
 		return this;
 	}
 	
+	/**
+	 * Specify the value of a uniform variable for the current program object.
+	 * 
+	 * @param name Name of the uniform variable
+	 * @param a First value for the given uniform variable
+	 * @param b Second value for the given uniform variable
+	 * @return This
+	 */
 	Shader vec2(String name, float a, float b) {
 		int loc = this.uniformLoc(name);
 		if (loc >= 0) {
