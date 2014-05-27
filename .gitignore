@@ -14,4 +14,11 @@ bin/
 gen/
 res/values-*/
 project.properties
-.gltrace
+*.gltrace
+
+############
+## Custom
+############
+
+doc/
+!doc/javadoc.xml

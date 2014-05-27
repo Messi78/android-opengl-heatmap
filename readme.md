@@ -2,6 +2,10 @@
 
 Android OpenGL ES 2.0 implementation of [webgl-heatmap.js](http://github.com/pyalot/webgl-heatmap) by [Florian Bösch](http://github.com/pyalot).
 
+### Documentation
+
+see [JavaDoc](http://xennis.github.io/android-opengl-heatmap/doc/)
+
 ### Screenshots
 
 ![0.1](_screenshots/0.1.png)
