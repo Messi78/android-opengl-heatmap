@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class Shader {
 
-//	private Map<String, Integer> attribCache;
+	//private Map<String, Integer> attribCache;
 	/** Caches the location of uniform variables */
 	private Map<String, Integer> uniform_cache;
 	/** Cache the value of uniform integer variables */
@@ -36,29 +36,29 @@ public class Shader {
 		//if (this.fs == 0) throw new RuntimeException("Error creating fragment shader.");
 		GLES20.glAttachShader(this.program, this.vs);
 		GLES20.glAttachShader(this.program, this.fs);
-// Bind attributes
-GLES20.glBindAttribLocation(this.program, 1, Main.VARIABLE_ATTRIBUTE_INTENSITY);
-GLES20.glBindAttribLocation(this.program, 0, Main.VARIABLE_ATTRIBUTE_POSITION);
+		// Bind attributes
+		GLES20.glBindAttribLocation(this.program, 1, Main.VARIABLE_ATTRIBUTE_INTENSITY);
+		GLES20.glBindAttribLocation(this.program, 0, Main.VARIABLE_ATTRIBUTE_POSITION);
 
 		this.compileShader(this.vs, vertex);
 		this.compileShader(this.fs, fragment);
 		this.link();
 		this.value_cache = new HashMap<String, Integer>();
 		this.uniform_cache = new HashMap<String, Integer>();
-//		this.attribCache = new HashMap<String, Integer>();
+		//this.attribCache = new HashMap<String, Integer>();
 	}
 
-//	public int attribLocation(final String name) {
-//		Integer location = this.attribCache.get(name);
-//		if (location == null) {
-//			location = GLES20.glGetAttribLocation(this.program, name);
-//if (location <0 ) {
-//	Log.e("attribLocation", "negative location: " + location);
-//}
-//			this.attribCache.put(name, location);
-//		}
-//		return location;
-//	}
+	//public int attribLocation(final String name) {
+	//	Integer location = this.attribCache.get(name);
+	//	if (location == null) {
+	//		location = GLES20.glGetAttribLocation(this.program, name);
+	//		if (location <0 ) {
+	//			Log.e("attribLocation", "negative location: " + location);
+	//		}
+	//		this.attribCache.put(name, location);
+	//	}
+	//	return location;
+	//}
 
 	/**
 	 * Compile the given shader and check for errors afterwards.
@@ -112,9 +112,9 @@ GLES20.glBindAttribLocation(this.program, 0, Main.VARIABLE_ATTRIBUTE_POSITION);
 		Integer location = this.uniform_cache.get(name);
 		if (location == null) {
 			location = GLES20.glGetUniformLocation(this.program, name);
-if (location < 0) {
-	Log.w("uniformLoc", "location negative:" + location);
-}
+			if (location < 0) {
+				Log.w("uniformLoc", "location negative:" + location);
+			}
 			this.uniform_cache.put(name, location);
 		}
 		return location;
@@ -158,15 +158,15 @@ if (location < 0) {
 		return this;
 	}
 	
-//	Shader _float(String name, float value) {
-//		float cached = this.value_cache.get(name);
-//		if (cached != value) {
-//			this.value_cache.put(name, value);
-//			Integer loc = this.uniformLoc(name);
-//			if (loc != null) {
-//				GLES20.glUniform1f(loc, value);
-//			}
-//		}
-//		return this;
-//	}
+	//Shader _float(String name, float value) {
+	//	float cached = this.value_cache.get(name);
+	//	if (cached != value) {
+	//		this.value_cache.put(name, value);
+	//		Integer loc = this.uniformLoc(name);
+	//		if (loc != null) {
+	//			GLES20.glUniform1f(loc, value);
+	//		}
+	//	}
+	//	return this;
+	//}
 }

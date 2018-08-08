@@ -29,7 +29,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 		// Set the background frame color
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    }
+	}
 
 	@Override
 	public void onDrawFrame(GL10 unused) {
@@ -64,8 +64,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 	@Override
 	public void onSurfaceChanged(GL10 unused, int width, int height) {
-Log.i(LOG, "width=" + width + ", height=" + height);    	
-
+		Log.i(LOG, "width=" + width + ", height=" + height);
 
 		try {
 			if (mHeatmap == null) {
@@ -95,7 +94,6 @@ Log.i(LOG, "width=" + width + ", height=" + height);
 		// this projection matrix is applied to object coordinates
 		// in the onDrawFrame() method
 		Matrix.frustumM(mProjectionMatrix, 0, left, right, bottom, top, near, far);
-
 	}
 
 	/**

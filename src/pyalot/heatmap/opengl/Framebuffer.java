@@ -87,13 +87,12 @@ public class Framebuffer {
 		return this;
 	}
 
-//	void depth(MyBuffer buffer) {
-//		GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT, GLES20.GL_RENDERBUFFER, buffer.id);
-//		try {
-//			this.check();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
+	//void depth(MyBuffer buffer) {
+	//	GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT, GLES20.GL_RENDERBUFFER, buffer.id);
+	//	try {
+	//		this.check();
+	//	} catch (Exception e) {
+	//		e.printStackTrace();
+	//	}
+	//}
 }

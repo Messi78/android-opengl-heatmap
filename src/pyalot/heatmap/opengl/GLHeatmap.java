@@ -39,7 +39,7 @@ public class GLHeatmap {
 		//MyGLRenderer.checkGlError("glEnableVertexAttribArray");
 		GLES20.glBlendFunc(GLES20.GL_ONE, GLES20.GL_ONE);
 		//MyGLRenderer.checkGlError("glBlendFunc");
-// ...
+		// ...
 		String getColorFun  =
 			"vec3 getColor(float intensity){						\n" +
 			"    vec3 blue   = vec3(0.0, 0.0, 1.0);					\n" +
@@ -57,18 +57,18 @@ public class GLHeatmap {
 			"    );													\n" +
 			"    return color;										\n" +
 			"}";
-// ...
+		// ...
 		String output = 
 			"vec4 alphaFun(vec3 color, float intensity){			\n" +
 			"    float alpha = smoothstep(0.0, 1.0, intensity);		\n" +
 			"    return vec4(color*alpha, alpha);					\n" +
 			"}";
-// ...
+		// ...
 		this.shader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
-//			"float linstep(float low, float high, float value){		\n" +
-//			"    return clamp((value-low)/(high-low), 0.0, 1.0);	\n" +
-//			"}\n" +
-//			"\n" +
+			//"float linstep(float low, float high, float value){		\n" +
+			//"    return clamp((value-low)/(high-low), 0.0, 1.0);	\n" +
+			//"}\n" +
+			//"\n" +
 			"float fade(float low, float high, float value){		\n" +
 			"    float mid   = (low+high)*0.5;						\n" +
 			"    float range = (high-low)*0.5;						\n" +
@@ -82,7 +82,7 @@ public class GLHeatmap {
 			"    vec3 color = getColor(intensity);\n" +
 			"    gl_FragColor = alphaFun(color, intensity);\n" +
 			"}");
-// ...
+		// ...
 		GLES20.glViewport(0, 0, this.width, this.height);
 		this.quad = new int[Main.NUM_BUFFER];
 		GLES20.glGenBuffers(Main.NUM_BUFFER, this.quad, Main.BUFFER_OFFSET);
@@ -111,11 +111,11 @@ public class GLHeatmap {
 		}
 	}
 	
-//	private String toFixed(double f, int newScale) {
-//		BigDecimal numberBigDecimal = new BigDecimal(f);
-//		numberBigDecimal = numberBigDecimal .setScale(newScale, BigDecimal.ROUND_HALF_UP);
-//		return numberBigDecimal.toString();
-//	}
+	//private String toFixed(double f, int newScale) {
+	//	BigDecimal numberBigDecimal = new BigDecimal(f);
+	//	numberBigDecimal = numberBigDecimal .setScale(newScale, BigDecimal.ROUND_HALF_UP);
+	//	return numberBigDecimal.toString();
+	//}
 	
 	/**
 	 * Display the heatmap.
@@ -124,13 +124,13 @@ public class GLHeatmap {
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.quad[Main.BUFFER_OFFSET]);
 		GLES20.glVertexAttribPointer(Main.BIND_ZERO, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, Main.BUFFER_OFFSET);
 		this.heights.nodeFront.bind(Main.BIND_ZERO);
-//		if (this.gradientTexture != null) {
-//			try {
-//				this.gradientTexture.bind(1);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
+		//if (this.gradientTexture != null) {
+		//	try {
+		//		this.gradientTexture.bind(1);
+		//	} catch (Exception e) {
+		//		e.printStackTrace();
+		//	}
+		//}
 		this.shader.use()._int(Main.VARIABLE_UNIFORM_SOURCE, Main.BIND_ZERO);
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.NUM_INDICES_RENDER);
 	}
@@ -149,26 +149,26 @@ public class GLHeatmap {
 		this.heights.clear();
 	}
 	
-//	public void clamp(Integer min, Integer max) {
-//		if (min == null) {
-//			min = 0;
-//		}
-//		if (max == null) {
-//			max = 1;
-//		}
-//		this.heights.clamp(min, max);
-//	}
-//	
-//	public void multiplay(Float value) {
-//		if (value == null) {
-//			value = 0.95f;
-//		}
-//		this.heights.multiply(value);
-//	}
-//	
-//	public void blur() {
-//		this.heights.blur();
-//	}
+	//public void clamp(Integer min, Integer max) {
+	//	if (min == null) {
+	//		min = 0;
+	//	}
+	//	if (max == null) {
+	//		max = 1;
+	//	}
+	//	this.heights.clamp(min, max);
+	//}
+	//
+	//public void multiplay(Float value) {
+	//	if (value == null) {
+	//		value = 0.95f;
+	//	}
+	//	this.heights.multiply(value);
+	//}
+	//
+	//public void blur() {
+	//	this.heights.blur();
+	//}
 
 	/* (non-Javadoc)
 	 * 
@@ -177,14 +177,13 @@ public class GLHeatmap {
 	public void addPoint(float x, float y, float size, float intensity) {
 		this.heights.addPoint(x, y, size, intensity);
 	}
-	
-//	public void addPoints(MyItem[] items) {
-//		MyItem item;
-//		//_results = [];
-//		for (int i = 0; i < items.length; i++) {
-//			item = items[i];
-//			this.addPoint(item.x, item.y, item.size, item.intensity);
-//		}
-//	}
-	
+
+	//public void addPoints(MyItem[] items) {
+	//	MyItem item;
+	//	//_results = [];
+	//	for (int i = 0; i < items.length; i++) {
+	//		item = items[i];
+	//		this.addPoint(item.x, item.y, item.size, item.intensity);
+	//	}
+	//}
 }

@@ -15,16 +15,16 @@ public class Heights {
 	/** Height of the viewport */
 	private int height;
 	private Shader shader;
-//	private Shader clampShader;
-//	private Shader multiplyShader;
-//	private Shader blurShader;
+	//private Shader clampShader;
+	//private Shader multiplyShader;
+	//private Shader blurShader;
 	/** A Node */
 	private Node nodeBack;
 	/** A node */
 	Node nodeFront;
 	/** Array which stores the generated buffer object names */
 	private int[] vertexBuffer;
-//	private int maxPointCount;
+	//private int maxPointCount;
 	private FloatBuffer vertexBufferData;
 	/** Stores the current index position in the {@code vertexBufferData} */
 	private int bufferIndex;
@@ -70,30 +70,30 @@ public class Heights {
 			"    float intensity = falloff*vIntensity;	\n" +
 			"    gl_FragColor = vec4(intensity);		\n" +
 			"}");
-//		this.clampShader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
-//				"uniform float low, high;					\n" +
-//				"void main(){								\n" +
-//				"    gl_FragColor = vec4(clamp(texture2D(source, texcoord).rgb, low, high), 1.0);\n" +
-//				"}");
-//		this.multiplyShader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
-//				"uniform float value;						\n" +
-//				"void main(){								\n" +
-//				"    gl_FragColor = vec4(texture2D(source, texcoord).rgb*value, 1.0);\n" +
-//				"}");
-//		this.blurShader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
-//				"uniform vec2 viewport;						\n" +
-//				"void main(){								\n" +
-//				"    vec4 result = vec4(0.0);				\n" +
-//				"    for(int x=-1; x<=1; x++){				\n" +
-//				"        for(int y=-1; y<=1; y++){			\n" +
-//				"            vec2 off = vec2(x,y)/viewport;\n" +
-//				"            //float factor = 1.0 - smoothstep(0.0, 1.5, length(off));\n" +
-//				"            float factor = 1.0;			\n" +
-//				"            result += vec4(texture2D(source, texcoord+off).rgb*factor, factor);\n" +
-//				"        }									\n" +
-//				"    }										\n" +
-//				"    gl_FragColor = vec4(result.rgb/result.w, 1.0);\n" +
-//				"}");
+			//this.clampShader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
+			//		"uniform float low, high;					\n" +
+			//		"void main(){								\n" +
+			//		"    gl_FragColor = vec4(clamp(texture2D(source, texcoord).rgb, low, high), 1.0);\n" +
+			//		"}");
+			//this.multiplyShader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
+			//		"uniform float value;						\n" +
+			//		"void main(){								\n" +
+			//		"    gl_FragColor = vec4(texture2D(source, texcoord).rgb*value, 1.0);\n" +
+			//		"}");
+			//this.blurShader = new Shader(Main.vertexShaderBlit, Main.fragmentShaderBlit + 
+			//		"uniform vec2 viewport;						\n" +
+			//		"void main(){								\n" +
+			//		"    vec4 result = vec4(0.0);				\n" +
+			//		"    for(int x=-1; x<=1; x++){				\n" +
+			//		"        for(int y=-1; y<=1; y++){			\n" +
+			//		"            vec2 off = vec2(x,y)/viewport;\n" +
+			//		"            //float factor = 1.0 - smoothstep(0.0, 1.5, length(off));\n" +
+			//		"            float factor = 1.0;			\n" +
+			//		"            result += vec4(texture2D(source, texcoord+off).rgb*factor, factor);\n" +
+			//		"        }									\n" +
+			//		"    }										\n" +
+			//		"    gl_FragColor = vec4(result.rgb/result.w, 1.0);\n" +
+			//		"}");
 		this.nodeBack = new Node(this.width, this.height);
 		this.nodeFront = new Node(this.width, this.height);
 		this.vertexBuffer = new int[Main.NUM_BUFFER];
@@ -128,8 +128,8 @@ public class Heights {
 			this.vertexBufferData.position(0);
 			GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, this.vertexBufferData.capacity() * Main.BYTES_PER_FLOAT, this.vertexBufferData, GLES20.GL_STREAM_DRAW);
 			MyGLRenderer.checkGlError("glBufferData");			
-//			int positionLoc = this.shader.attribLocation(Main.VARIABLE_ATTRIBUTE_POSITION);
-//			int intensityLoc = this.shader.attribLocation(Main.VARIABLE_ATTRIBUTE_INTENSITY);
+			//int positionLoc = this.shader.attribLocation(Main.VARIABLE_ATTRIBUTE_POSITION);
+			//int intensityLoc = this.shader.attribLocation(Main.VARIABLE_ATTRIBUTE_INTENSITY);
 			//Log.i(LOG, positionLoc + "_" + intensityLoc);
 			GLES20.glEnableVertexAttribArray(1);
 			//MyGLRenderer.checkGlError("glEnableVertexAttribArray");	
@@ -159,44 +159,44 @@ public class Heights {
 		this.nodeFront.end();
 	}
 
-//	public void clamp(int min, int max) {
-//		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.heatmap.quad.get(0));
-//		GLES20.glVertexAttribPointer(0, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
-//		this.nodeFront.bind(0);
-//		this.nodeBack.use();
-//		this.clampShader.use()._int("source", 0)._float("low", min)._float("high", max);
-//		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.UNKOWN_SIX);
-//		this.nodeBack.end();
-//		this.swap();
-//	}
-//
-//	public void multiply(float value) {
-//		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.heatmap.quad.get(0));
-//		GLES20.glVertexAttribPointer(0, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
-//		this.nodeFront.bind(0);
-//		this.nodeBack.use();
-//		this.multiplyShader.use()._int("source", 0)._float("value", value);
-//		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.UNKOWN_SIX);
-//		this.nodeBack.end();
-//		this.swap();
-//	}
-//
-//	public void blur() {
-//		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.heatmap.quad.get(0));
-//		GLES20.glVertexAttribPointer(0, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
-//		this.nodeFront.bind(0);
-//		this.nodeBack.use();
-//		this.blurShader.use()._int("source", 0).vec2("viewport", this.width, this.height);
-//		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.UNKOWN_SIX);
-//		this.nodeBack.end();
-//		this.swap();
-//	}
-	
-//	private void swap() {
-//		Node tmp = this.nodeFront;
-//		this.nodeFront = this.nodeBack;
-//		this.nodeBack = tmp;
-//	}
+	//public void clamp(int min, int max) {
+	//	GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.heatmap.quad.get(0));
+	//	GLES20.glVertexAttribPointer(0, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+	//	this.nodeFront.bind(0);
+	//	this.nodeBack.use();
+	//	this.clampShader.use()._int("source", 0)._float("low", min)._float("high", max);
+	//	GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.UNKOWN_SIX);
+	//	this.nodeBack.end();
+	//	this.swap();
+	//}
+	//
+	//public void multiply(float value) {
+	//	GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.heatmap.quad.get(0));
+	//	GLES20.glVertexAttribPointer(0, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+	//	this.nodeFront.bind(0);
+	//	this.nodeBack.use();
+	//	this.multiplyShader.use()._int("source", 0)._float("value", value);
+	//	GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.UNKOWN_SIX);
+	//	this.nodeBack.end();
+	//	this.swap();
+	//}
+	//
+	//public void blur() {
+	//	GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, this.heatmap.quad.get(0));
+	//	GLES20.glVertexAttribPointer(0, Main.POSITION_DATA_SIZE, GLES20.GL_FLOAT, false, 0, 0);
+	//	this.nodeFront.bind(0);
+	//	this.nodeBack.use();
+	//	this.blurShader.use()._int("source", 0).vec2("viewport", this.width, this.height);
+	//	GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, Main.UNKOWN_SIX);
+	//	this.nodeBack.end();
+	//	this.swap();
+	//}
+	//
+	//private void swap() {
+	//	Node tmp = this.nodeFront;
+	//	this.nodeFront = this.nodeBack;
+	//	this.nodeBack = tmp;
+	//}
 	
 	/**
 	 * Add a point to the vertex buffer.
@@ -241,5 +241,4 @@ public class Heights {
 		this.addVertex(x, y, +s, +s, intensity);
 		this.pointCount += 1;
 	}
-
 }

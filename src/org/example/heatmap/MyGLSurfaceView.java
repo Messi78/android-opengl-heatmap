@@ -37,5 +37,4 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		}
 		return true;
 	}
-
 }

@@ -22,12 +22,12 @@ public class Node {
 		this.width = width;
 		this.height = height;
 		try {
-// TODO:
+			// TODO:
 			this.texture = new Texture(null, null).bind(Main.BIND_ZERO).setSize(this.width, this.height).nearest().clampToEdge();
-//			String floatExt =  this.gl.getFloatExtension({
-//				require: ['renderable']
-//			});
-//			this.texture = new Texture(floatExt.type).bind(0).setSize(this.width, this.height).nearest().clampToEdge();
+			//String floatExt =  this.gl.getFloatExtension({
+			//	require: ['renderable']
+			//});
+			//this.texture = new Texture(floatExt.type).bind(0).setSize(this.width, this.height).nearest().clampToEdge();
 			this.fbo = new Framebuffer().bind().color(this.texture).unbind();
 		} catch (RuntimeException e) {
 			e.printStackTrace();

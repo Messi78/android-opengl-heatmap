@@ -50,5 +50,5 @@ public class OpenGLES20Activity extends Activity {
 		// If you de-allocated graphic objects for onPause()
 		// this is a good place to re-allocate them.
 		mGLView.onResume();
-		}
+	}
 }
